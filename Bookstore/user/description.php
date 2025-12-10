@@ -7,7 +7,6 @@ if (!$isbn) {
     die("No book selected.");
 }
 
-// Fetch book + author details (handles one author per book; can be extended for multiple)
 $stmt = $conn->prepare("
     SELECT B.ISBN, B.Title, B.Price, B.Stk_Quant, B.Cover_Image,
            A.Auth_name, A.Nationality, A.Biography
@@ -21,7 +20,6 @@ $stmt->execute();
 $book = $stmt->get_result()->fetch_assoc();
 if (!$book) die("Book not found.");
 
-// Fetch reviews
 $rev = $conn->prepare("
     SELECT R.Rating, R.Commentary, C.User_ID
     FROM REVIEW R
