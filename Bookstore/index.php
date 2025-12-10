@@ -32,7 +32,6 @@ session_start();
 
 <div class="container">
     <?php if (!isset($_SESSION['user_role'])): ?>
-        <!-- Guest view -->
         <p>Please login or register to continue.</p>
         <a href="login_customer.php" class="btn">Customer Login</a>
         <a href="login_admin.php" class="btn">Admin Login</a>
