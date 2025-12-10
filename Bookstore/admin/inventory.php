@@ -1,0 +1,85 @@
+<?php
+session_start();
+include "../db.php";
+
+if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== "admin") {
+    header("Location: ../login_admin.php");
+    exit;
+}
+
+$sql = $conn->query("
+    SELECT B.ISBN, B.Title, B.Price, B.Stk_Quant, A.Auth_name
+    FROM BOOK B
+    JOIN WRITES W ON B.ISBN = W.Work_ID
+    JOIN AUTHOR A ON W.Writer_ID = A.Auth_ID
+    ORDER BY B.Title
+");
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Check</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #1abc9c;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Inventory</h1>
+</header>
+
+<nav>
+    <a href="../index.php">Home</a>
+    <a href="admin_index.php">Dashboard</a>
+    <a href="../logout.php">Logout</a>
+</nav>
+
+<div class="container">
+    <div class="order-card">
+        <table>
+            <tr>
+                <th>ISBN</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Price</th>
+                <th>Stock</th>
+            </tr>
+            <?php while ($row = $sql->fetch_assoc()): ?>
+            <tr>
+                <td><?= htmlspecialchars($row['ISBN']) ?></td>
+                <td><?= htmlspecialchars($row['Title']) ?></td>
+                <td><?= htmlspecialchars($row['Auth_name']) ?></td>
+                <td>$ <?= htmlspecialchars($row['Price']) ?></td>
+                <td><?= htmlspecialchars($row['Stk_Quant']) ?></td>
+            </tr>
+            <?php endwhile; ?>
+        </table>
+
+        <div style="margin-top:20px;">
+            <a href="admin_index.php" class="btn">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
