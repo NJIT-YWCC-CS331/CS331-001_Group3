@@ -84,7 +84,7 @@ $orders = $sql->get_result();
                 $items = $oi->get_result();
                 while ($item = $items->fetch_assoc()):
                 ?>
-                    <li><?= htmlspecialchars($item['Title']) ?> - RM <?= htmlspecialchars($item['Price']) ?></li>
+                    <li><?= htmlspecialchars($item['Title']) ?> - $ <?= htmlspecialchars($item['Price']) ?></li>
                 <?php endwhile; ?>
                 </ul>
 
